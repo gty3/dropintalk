@@ -42,7 +42,7 @@ export default function LandingPage() {
               <div className="">
                 <div className="">Drop-in Talk is a simple direct messenger that you can add to any site.
                   Create your account to get your URL and add pay functionality through Stripe.</div>
-                <div className="mt-4 mb-4 ">It's free to use</div>
+                <div className="mt-4 mb-4 ">It&apos;s free to use</div>
                 <input ref={emailRef} placeholder="Your email address" className="px-2 py-1 mb-2"></input>
                 <div className="flex">
                 <button
