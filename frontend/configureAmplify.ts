@@ -1,6 +1,5 @@
 import { Amplify } from 'aws-amplify'
 
-try {
   Amplify.configure({
     Auth: {
       region: process.env.NEXT_PUBLIC_REGION,
@@ -15,6 +14,3 @@ try {
       }]
     },
   })
-} catch (err) {
-  console.log('amplifyConfigErr', err)
-}
