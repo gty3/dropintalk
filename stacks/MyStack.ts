@@ -17,21 +17,21 @@ export function MyStack({ stack }: StackContext) {
     routes: {
       "POST /mailer": {
         function: {
-         handler: "functions/mailer.handler",
-         environment: {
-          EMAILS_TABLE: emailsTable.tableName
-         },
+          handler: "functions/mailer.handler",
+          environment: {
+            EMAILS_TABLE: emailsTable.tableName,
+          },
         },
-        authorizer: "iam"
+        authorizer: "iam",
       },
-    }
-  })
+    },
+  });
 
   auth.attachPermissionsForUnauthUsers(stack, [api])
 
   api.attachPermissions([emailsTable])
 
-  new NextjsSite(stack, "NextSite", {
+  const site = new NextjsSite(stack, "NextSite", {
     path: "frontend",
     environment: {
       NEXT_PUBLIC_API_URL: api.url,
@@ -39,13 +39,18 @@ export function MyStack({ stack }: StackContext) {
       NEXT_PUBLIC_COGNITO_USER_POOL_ID: auth.userPoolId,
       NEXT_PUBLIC_COGNITO_APP_CLIENT_ID: auth.userPoolClientId,
       NEXT_PUBLIC_IDENTITY_POOL_ID: auth.cognitoIdentityPoolId ?? "",
-      NEXT_PUBLIC_REGION: stack.region
-    }
+      NEXT_PUBLIC_REGION: stack.region,
+    },
+    customDomain: stack.stage === "prod" ? {
+      domainName: process.env.DOMAIN_NAME ?? "",
+      domainAlias: process.env.DOMAIN_ALIAS
+    } : undefined
   })
 
   stack.addOutputs({
-    ApiEndpoint: api.url,
-    table: emailsTable.tableName
+    table: emailsTable.tableName,
+    frontendUrl: site.url
   })
 
 }
+
