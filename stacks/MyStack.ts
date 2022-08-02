@@ -1,16 +1,15 @@
 import { StackContext, NextjsSite, Api, Table, Auth } from "@serverless-stack/resources";
 
 export function MyStack({ stack }: StackContext) {
-
   const auth = new Auth(stack, "Auth", {
     login: ["email"],
   })
 
-  const emailsTable = new Table(stack, 'EmailsTable', {
+  const emailsTable = new Table(stack, "EmailsTable", {
     fields: {
-      email: "string"
+      email: "string",
     },
-    primaryIndex: { partitionKey: "email" }
+    primaryIndex: { partitionKey: "email" },
   })
 
   const api = new Api(stack, "Api", {
@@ -21,12 +20,12 @@ export function MyStack({ stack }: StackContext) {
           environment: {
             EMAILS_TABLE: emailsTable.tableName,
           },
-          permissions: [emailsTable]
+          permissions: [emailsTable],
         },
         authorizer: "iam",
       },
     },
-  });
+  })
 
   auth.attachPermissionsForUnauthUsers(stack, [api])
 
@@ -40,16 +39,18 @@ export function MyStack({ stack }: StackContext) {
       NEXT_PUBLIC_IDENTITY_POOL_ID: auth.cognitoIdentityPoolId ?? "",
       NEXT_PUBLIC_REGION: stack.region,
     },
-    customDomain: stack.stage === "prod" ? {
-      domainName: process.env.DOMAIN_NAME ?? "",
-      domainAlias: process.env.DOMAIN_ALIAS
-    } : undefined
+    customDomain:
+      stack.stage === "prod"
+        ? {
+            domainName: process.env.DOMAIN_NAME ?? "",
+            domainAlias: process.env.DOMAIN_ALIAS,
+          }
+        : undefined,
   })
 
   stack.addOutputs({
     table: emailsTable.tableName,
-    frontendUrl: site.url
+    frontendUrl: site.url,
   })
-
 }
 
