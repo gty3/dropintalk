@@ -21,6 +21,7 @@ export function MyStack({ stack }: StackContext) {
           environment: {
             EMAILS_TABLE: emailsTable.tableName,
           },
+          permissions: [emailsTable]
         },
         authorizer: "iam",
       },
@@ -28,8 +29,6 @@ export function MyStack({ stack }: StackContext) {
   });
 
   auth.attachPermissionsForUnauthUsers(stack, [api])
-
-  api.attachPermissions([emailsTable])
 
   const site = new NextjsSite(stack, "NextSite", {
     path: "frontend",
