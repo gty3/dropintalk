@@ -54,7 +54,7 @@ export default function LandingPage() {
                 {emailState === "succeeded" && '✔️'}</div>
                 </div>
                 <div className="flex justify-center mt-14 md:hidden md:mt-0">
-                  <Image width="307" height="615" src="/messagescreen.png"></Image>
+                  <Image alt="user website" width="307" height="615" src="/messagescreen.png"></Image>
                 </div>
               </div>
             </div>
