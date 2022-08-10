@@ -20,8 +20,7 @@ export default function LandingPage() {
         setEmailState("failed")
         return
       }
-      const shit = await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/mailer", emailAddressParams)
-      console.log(shit)
+      await API.post(process.env.NEXT_PUBLIC_APIGATEWAY_NAME, "/mailer", emailAddressParams)
       setEmailState("succeeded")
     } else {
       console.log('failed vali')

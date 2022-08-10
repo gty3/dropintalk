@@ -20,7 +20,7 @@ export function MyStack({ stack }: StackContext) {
           environment: {
             EMAILS_TABLE: emailsTable.tableName,
           },
-          permissions: [emailsTable],
+          permissions: [emailsTable, "ses"],
         },
         authorizer: "iam",
       },
@@ -49,8 +49,7 @@ export function MyStack({ stack }: StackContext) {
   })
 
   stack.addOutputs({
-    table: emailsTable.tableName,
-    frontendUrl: site.url,
+    siteUrl: site.url
   })
 }
 

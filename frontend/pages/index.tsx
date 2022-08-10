@@ -4,7 +4,7 @@ import LandingPage from '../components/landingPage'
 import '../configureAmplify'
 
 const Home: NextPage = () => {
-  console.log('process Index', process.env.NEXT_PUBLIC_REGION)
+
   return (
     <div>
       <Head>

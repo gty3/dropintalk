@@ -1,6 +1,7 @@
-import { DynamoDB } from "aws-sdk"
+import { DynamoDB, SES } from "aws-sdk"
 import { APIGatewayProxyHandlerV2 } from "aws-lambda"
 const dynamoDb = new DynamoDB.DocumentClient()
+const ses = new SES({ region: 'us-east-1' })
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   console.log("emailsTable", process.env.EMAILS_TABLE)
@@ -24,6 +25,22 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     TableName: process.env.EMAILS_TABLE,
   }
   await dynamoDb.put(newEmailParams).promise()
+
+  const emailParams = {
+    Destination: {
+      ToAddresses: process.env.
+    },
+    Message: {
+      Body: {
+        Text:
+          { Data: `open phone ${url}/receiver` }
+      },
+      Subject: { Data: "Someone is contacting you on Talktree" }
+    },
+    Source: "Talktree <noreply@talktree.me>"
+  }
+
+  const sendEmail = ses.sendEmail(emailParams).promise()
 
   return {
     statusCode: 200,
